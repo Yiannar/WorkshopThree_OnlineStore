@@ -23,18 +23,12 @@ public class Main {
 
              option = scanner.nextInt();
 
-             int command;
 
-             command = scanner.nextInt();
-
-            String input;
-
-
-
-             switch (command){
+             switch (option){
                  case 1:
                      try {
                          BufferedReader bufReader = new BufferedReader(new FileReader("Products.txt"));
+                         String input;
 
                          while ( (input = bufReader.readLine()) != null){
                              String[] splitInput = input.split("\\|");
@@ -43,17 +37,20 @@ public class Main {
                              float price = Float.parseFloat(splitInput[2]);
                              String department = splitInput[3];
 
-                             Product tempProduct = new Product(sku,productName, price, department);
+                             Product tempProduct = new Product(sku, productName, price, department);
                              storeInventory.add(tempProduct);
 
 
                          }
-                         String[] splitInput = input.split("");
+                         bufReader.close();
                      } catch (IOException e){
                          e.printStackTrace();
                      }
 
-                     System.out.println(storeInventory);
+                     for (Product product : storeInventory) {
+                         System.out.println(product);
+                     }
+                     break;
 
                  case 2:
 
@@ -69,29 +66,5 @@ public class Main {
 
 
     }
-//    public static void loadInventory (){
-//
-//        try {
-//            BufferedReader bufReader = new BufferedReader(new FileReader("Products.txt"));
-//            String input;
-//
-//          while ( (input = bufReader.readLine()) != null){
-//              String[] splitInput = input.split("\\|");
-//              String sku = splitInput[0];
-//              String productName = splitInput[1];
-//              Float price = Float.parseFloat(splitInput[2]);
-//              String department = splitInput[3];
-//
-//              Product tempProduct = new Product(sku,productName, price, department);
-//              storeInventory.add(tempProduct);
-//
-//
-//          }
-//            String[] splitInput = input.split("");
-//        } catch (IOException e){
-//           e.printStackTrace();
-//        }
-//
-//        System.out.println(storeInventory);
-//    }
+
 }
