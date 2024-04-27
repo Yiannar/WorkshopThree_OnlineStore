@@ -5,8 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import com.ps.ProductSearch;
 
 public class Main {
+
     public static void main(String[] args) {
 
         ArrayList<Product> storeInventory = new ArrayList<>();
@@ -30,7 +32,7 @@ public class Main {
                          BufferedReader bufReader = new BufferedReader(new FileReader("Products.txt"));
                          String input;
 
-                         while ( (input = bufReader.readLine()) != null){
+                         while ((input = bufReader.readLine()) != null){
                              String[] splitInput = input.split("\\|");
                              String sku = splitInput[0];
                              String productName = splitInput[1];
@@ -50,6 +52,51 @@ public class Main {
                      for (Product product : storeInventory) {
                          System.out.println(product);
                      }
+                     System.out.println("Please select from one of the following options.");
+                     System.out.println("\t1) Search through the list of products");
+                     System.out.println("\t2) Add a product to cart");
+                     System.out.println("\t3) Return to the HOME menu");
+
+                     int command = scanner.nextInt();
+
+                     switch (command) {
+                         case 1:
+                             // Search option
+                             System.out.println("Please select your budget range: ");
+                             System.out.println("\t1) Less than $20");
+                             System.out.println("\t2) Between $20 and $50");
+                             System.out.println("\t3) Greater than $50");
+
+                             int userPrice = scanner.nextInt();
+
+                             for (Product product : storeInventory) {
+                                 if (userPrice == 1) {
+                                     if(product.getPrice()<=20){
+                                         System.out.println(product);
+                                     }
+
+                                 } else if (userPrice == 2) {
+                                     if(product.getPrice()>=20 && product.getPrice()<=50){
+                                         System.out.println(product);
+                                     }
+
+                                 } else if (userPrice == 3) {
+                                     if(product.getPrice()>= 50) {
+                                         System.out.println(product);
+                                     }
+                                 } else {
+                                 }
+                             }
+                             break;
+                         case 2:
+                             // Add a product to cart
+                             break;
+                         case 3:
+                             // Return to home menu
+                             System.out.println("Returning back to HOME menu...");
+                             break;
+                     }
+
                      break;
 
                  case 2:
