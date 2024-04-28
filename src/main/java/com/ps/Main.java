@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import com.ps.ProductSearch;
 
 public class Main {
 
@@ -18,7 +17,7 @@ public class Main {
         int option;
 
         do {
-            System.out.println("Please select from the following options: ");
+            System.out.println("\nPlease select from the following options: ");
 
             System.out.println("\t1) Display Products");
             System.out.println("\t2) Display Cart");
@@ -43,7 +42,6 @@ public class Main {
                             Product tempProduct = new Product(sku, productName, price, department);
                             storeInventory.add(tempProduct);
 
-
                         }
                         bufReader.close();
                     } catch (IOException e){
@@ -51,132 +49,152 @@ public class Main {
                     }
 
                     for (Product product : storeInventory) {
-                        System.out.println(product);
+                        System.out.printf("SKU:%s    %s       %s            $%.2f\n",
+                                product.getSku(),
+                                product.getDepartment(),
+                                product.getName(),
+                                product.getPrice());
                     }
-                    System.out.println("Please select from one of the following options.");
-                    System.out.println("\t1) Search through the list of products");
-                    System.out.println("\t2) Add a product to cart");
-                    System.out.println("\t3) Return to the HOME menu");
+                    int command;
+                    do {
+                        System.out.println("\nPlease select from one of the following options.");
+                        System.out.println("\t1) Search through the list of products");
+                        System.out.println("\t2) Add a product to cart");
+                        System.out.println("\t3) Return to the HOME menu");
 
-                    int command = scanner.nextInt();
+                        command = scanner.nextInt();
 
-                    switch (command) {
-                        case 1:
-                            // Search option
-                            System.out.println("Please select your budget range: ");
-                            System.out.println("\t1) Less than $20");
-                            System.out.println("\t2) Between $20 and $50");
-                            System.out.println("\t3) Greater than $50");
+                        switch (command) {
+                            case 1:
 
-                            int userPrice = scanner.nextInt();
+                                System.out.println("\nPlease select your budget range: ");
+                                System.out.println("\t1) Less than $20");
+                                System.out.println("\t2) Between $20 and $50");
+                                System.out.println("\t3) Greater than $50");
 
-                            for (Product product : storeInventory) {
-                                if (userPrice == 1) {
-                                    if(product.getPrice()<=20){
-                                        System.out.println(product);
+                                int userPrice = scanner.nextInt();
+
+                                for (Product product : storeInventory) {
+                                    if (userPrice == 1) {
+                                        if (product.getPrice() <= 20) {
+                                            System.out.printf("SKU:%s    %s       %s            $%.2f\n",
+                                                    product.getSku(),
+                                                    product.getDepartment(),
+                                                    product.getName(),
+                                                    product.getPrice());
+                                        }
+
+                                    } else if (userPrice == 2) {
+                                        if (product.getPrice() >= 20 && product.getPrice() <= 50) {
+                                            System.out.printf("SKU:%s    %s       %s            $%.2f\n",
+                                                    product.getSku(),
+                                                    product.getDepartment(),
+                                                    product.getName(),
+                                                    product.getPrice());
+                                        }
+
+                                    } else if (userPrice == 3) {
+                                        if (product.getPrice() >= 50) {
+                                            System.out.printf("SKU:%s    %s       %s            $%.2f\n",
+                                                    product.getSku(),
+                                                    product.getDepartment(),
+                                                    product.getName(),
+                                                    product.getPrice());
+                                        }
+                                    } else {
                                     }
-
-                                } else if (userPrice == 2) {
-                                    if(product.getPrice()>=20 && product.getPrice()<=50){
-                                        System.out.println(product);
-                                    }
-
-                                } else if (userPrice == 3) {
-                                    if(product.getPrice()>= 50) {
-                                        System.out.println(product);
-                                    }
-                                } else {
                                 }
-                            }
-                            break;
-                        case 2:
-                            String addItem;
-                            // Add a product to cart
-                            System.out.println("Enter the SKU number of the product you would like to add to cart");
-                            addItem = scanner.next();
+                                break;
+                            case 2:
+                                String addItem;
 
+                                System.out.println("Enter the SKU number of the product you would like to add to cart");
+                                addItem = scanner.next().toUpperCase().trim();
 
-                                for(Product product: storeInventory) {
-                                    if(addItem.equals(product.getSku())){
+                                boolean itemFound = false;
+
+                                for (Product product : storeInventory) {
+                                    if (addItem.equals(product.getSku())) {
                                         cart.add(product);
                                         System.out.println("Item was successfully added to cart!");
-                                    }
 
+                                        itemFound = true;
+                                        break;
+                                    }
+                                }
+                                if (!itemFound) {
+                                    System.out.println("Item could not be found.");
                                 }
 
-                            System.out.println(cart);
-
-                            break;
-                        case 3:
-                            // Return to home menu
-                            System.out.println("Returning back to HOME menu...");
-                            break;
-                    }
-
+                                break;
+                            case 3:
+                                System.out.println("Returning back to HOME menu...");
+                                break;
+                            default:
+                                System.out.println("Command not found.");
+                        }
+                    } while (command!= 3);
                     break;
-
                 case 2:
+                    int checkOutMenu;
+                    do {
+                        System.out.println("\nItems in your cart:\n");
+                        float cartTotal = 0;
+                        for (Product product : cart) {
+                            cartTotal += product.getPrice();
+                            System.out.printf("%s    $%.2f\n", product.getName(), product.getPrice());
+                            //break;
+                        }
+                        System.out.printf("\nYour total cost is: " + "$%.2f", cartTotal);
+                        System.out.println("\n\nWhat would you like to do? ");
+                        System.out.println("\t1) Check Out");
+                        System.out.println("\t2) Remove a product from cart");
+                        System.out.println("\t3) Go to home menu");
 
-                    System.out.println("Items in your cart:" + cart);
-                    float cartTotal = 0;
-                    for(Product product : cart) {
-                        cartTotal += product.getPrice();
-                    }
-                    System.out.println("Your total cost is:" + "$" + cartTotal);
-                    System.out.println("\nWhat would you like to do? ");
-                    System.out.println("\t1) Check Out");
-                    System.out.println("\t2) Remove a product from cart");
-                    System.out.println("\t3) Go to home menu");
+                        checkOutMenu = scanner.nextInt();
 
-                    int checkOutMenu = scanner.nextInt();
+                        switch (checkOutMenu) {
+                            case 1:
 
-                    switch (checkOutMenu){
-                        case 1:
+                                System.out.println("Are you sure you want to checkout?");
 
-                            System.out.println("Are you sure you want to checkout?");
-
-                            String checkout = scanner.next();
-                                if(checkout.equalsIgnoreCase("yes")){
+                                String checkout = scanner.next();
+                                if (checkout.equalsIgnoreCase("yes")) {
                                     System.out.println("You have successfully checked out!");
+                                    System.exit(0);
                                 } else {
                                     continue;
                                 }
 
-                            break;
-                        case 2:
-                            String cartItemRemoved;
+                                break;
+                            case 2:
+                                String cartItemRemoved;
+                                boolean cartItem = false;
 
-                            System.out.println("Which item would you like to remove from your cart? Please type Sku number");
-                            cartItemRemoved = scanner.next();
+                                System.out.println("\nPlease enter in the SKU of the item you would like to remove from your cart");
+                                cartItemRemoved = scanner.next().toUpperCase().trim();
 
-                            for(Product product: cart) {
-                                if(cartItemRemoved.equals(product.getSku())){
-                                    cart.remove(product);
-                                    System.out.println("Item was successfully removed to cart!");
+                                for (Product product : cart) {
+                                    if (cartItemRemoved.equals(product.getSku())) {
+                                        cart.remove(product);
+                                        cartItem = true;
+                                        System.out.println("Item was successfully removed from cart.");
+                                        break;
+                                    }
                                 }
-
-                            }
-
-                            break;
-                        case 3:
-                        continue;
-
-
-
-                    }
-
-
-
+                                if (!cartItem) {
+                                    System.out.println("Item not found in cart");
+                                }
+                                break;
+                            case 3:
+                                System.out.println("Returning to HOME menu...");
+                                break;
+                        }
+                    } while (checkOutMenu !=3);
                     break;
             }
 
         } while (option != 3);
-
-
-
-
-
-
 
     }
 
